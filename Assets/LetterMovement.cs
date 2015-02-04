@@ -15,7 +15,7 @@ public class LetterMovement : MonoBehaviour {
 	public bool shouldRemove = false;
 	public bool isActive;
 	public float speed;
-	private float minSwipeDistX = 130f;
+	private float minSwipeDistX = 131f;
 	public string letterInAlphabet;
 	public bool isSwipedDown = false;
 	public int letterScore;
