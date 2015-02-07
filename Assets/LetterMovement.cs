@@ -62,7 +62,7 @@ public class LetterMovement : MonoBehaviour {
 	private void InitializeMovementParameters()
 	{
 		sprite = GetComponent<SpriteRenderer>();
-		speed = 1;
+		speed = 0.8f;
 		isActive = true;
 		targetPosition = new Vector3 (2.5f, 0.8f);
 	}
@@ -150,17 +150,27 @@ public class LetterMovement : MonoBehaviour {
 					
 					if (swipeValue > 0) {
 						if (transform.position.x + RandomLetters.movementMargin < 5f) {
-							Vector3 currentPosition = transform.position;
-							currentPosition.x += RandomLetters.movementMargin;
-							targetPosition.x += RandomLetters.movementMargin;
-							transform.position = currentPosition;
+							var isLeft = allLettersOnBoard.Where(x => Convert.ToInt32(x.transform.position.x * 10) == Convert.ToInt32((transform.position.x + RandomLetters.movementMargin) * 10) &&
+							                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
+							
+							if (isLeft == null) {
+								Vector3 currentPosition = transform.position;
+								currentPosition.x += RandomLetters.movementMargin;
+								targetPosition.x += RandomLetters.movementMargin;
+								transform.position = currentPosition;
+							}
 						}
 					} else if (swipeValue < 0) {
 						if (transform.position.x - RandomLetters.movementMargin > 0.4f) {
-							Vector3 currentPosition = transform.position;
-							currentPosition.x -= RandomLetters.movementMargin;
-							targetPosition.x -= RandomLetters.movementMargin;
-							transform.position = currentPosition;
+							var isLeft = allLettersOnBoard.Where(x => Convert.ToInt32(x.transform.position.x * 10) == Convert.ToInt32((transform.position.x - RandomLetters.movementMargin) * 10) &&
+							                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
+
+							if (isLeft == null) {
+								Vector3 currentPosition = transform.position;
+								currentPosition.x -= RandomLetters.movementMargin;
+								targetPosition.x -= RandomLetters.movementMargin;
+								transform.position = currentPosition;
+							}
 						}
 					}
 					swipeDistHorizontal = 0f;
@@ -184,17 +194,28 @@ public class LetterMovement : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			if (transform.position.x - RandomLetters.movementMargin > 0.4f) {
-				Vector3 position = this.transform.position;
-				position.x -= RandomLetters.movementMargin;
-				targetPosition.x -= RandomLetters.movementMargin;
-				this.transform.position = position;
+				var isLeft = allLettersOnBoard.Where(x => Convert.ToInt32(x.transform.position.x * 10) == Convert.ToInt32((transform.position.x - RandomLetters.movementMargin) * 10) &&
+				                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
+
+				if (isLeft == null) {
+					Vector3 position = this.transform.position;
+					position.x -= RandomLetters.movementMargin;
+					targetPosition.x -= RandomLetters.movementMargin;
+					this.transform.position = position;
+				}
+
 			}
 		} else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-			if (transform.position.x + RandomLetters.movementMargin < 5f) {
-				Vector3 position = this.transform.position;
-				position.x += RandomLetters.movementMargin;
-				targetPosition.x += RandomLetters.movementMargin;
-				this.transform.position = position;
+			var isLeft = allLettersOnBoard.Where(x => Convert.ToInt32(x.transform.position.x * 10) == Convert.ToInt32((transform.position.x + RandomLetters.movementMargin) * 10) &&
+			                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
+			
+			if (isLeft == null) {
+				if (transform.position.x + RandomLetters.movementMargin < 5f) {
+					Vector3 position = this.transform.position;
+					position.x += RandomLetters.movementMargin;
+					targetPosition.x += RandomLetters.movementMargin;
+					this.transform.position = position;
+				}
 			}
 		} else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 			isSwipedDown = true;
@@ -437,7 +458,27 @@ public class LetterMovement : MonoBehaviour {
 
 	private void DetermineScore(LetterMovement letter)
 	{
-		RandomLetters.gameScore += letter.letterScore;
+		float scoreMultiplier = 1;
+		switch (word.Length) {
+		case 3:
+			scoreMultiplier = RandomLetters.threeLetterScore;
+			break;
+		case 4:
+			scoreMultiplier = RandomLetters.fourLetterScore;
+			break;
+		case 5:
+			scoreMultiplier = RandomLetters.fiveLetterScore;
+			break;
+		case 6:
+			scoreMultiplier = RandomLetters.sixLetterScore;
+			break;
+		case 7:
+			scoreMultiplier = RandomLetters.sevenLetterScore;
+			break;
+		default:
+				break;
+		}
+		RandomLetters.gameScore += letter.letterScore * scoreMultiplier;
 	}
 
 	void HighlightLetters ()

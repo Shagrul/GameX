@@ -21,9 +21,16 @@ public class RandomLetters : MonoBehaviour {
 	public static bool isGameOver = false;
 	public GameObject gameOverText;
 	public GameObject gameOverPanel;
-	public static int gameScore = 0;
+	public static float gameScore = 0;
 	public static bool shouldPlaySound = false;
 	public AudioClip crashSound;
+	public char nextCharacter = 'a';
+	public GameObject nextLetterText;
+	public static float threeLetterScore = 1.2f;
+	public static float fourLetterScore = 1.4f;
+	public static float fiveLetterScore = 1.6f;
+	public static float sixLetterScore = 1.8f;
+	public static float sevenLetterScore = 2.0f;
 
 
 	//public static List<string> wordList = new List<string>();
@@ -48,6 +55,9 @@ public class RandomLetters : MonoBehaviour {
 		consonantList.Add (new KeyValuePair<string, double>("FHKPWV", 0.2));
 		consonantList.Add (new KeyValuePair<string, double>("BCDGM", 0.30));
 //		consonantList.Add (new KeyValuePair<string, double>("A", 1));
+		nextCharacter = GetRandomLetter ();
+		Text text = nextLetterText.GetComponent<Text>();
+		text.text = "Next Letter: " + nextCharacter.ToString ();
 	}
 
 	// Update is called once per frame
@@ -86,7 +96,7 @@ public class RandomLetters : MonoBehaviour {
 	public void UpdateScore()
 	{
 		Text text = gameOverText.GetComponent<Text>();
-		text.text = "Score: " + gameScore.ToString ();
+		text.text = "Score: " + Convert.ToInt32(gameScore).ToString ();
 	}
 
 	//Populate a list with valid words from a text file
@@ -122,9 +132,12 @@ public class RandomLetters : MonoBehaviour {
 	//Creates a new letter at the specified spot
 	private void SpawnLetter()
 	{
-		char randomLetter = GetRandomLetter();
+		char randomLetter = nextCharacter;
 		letterPrefab = (GameObject)Resources.Load(randomLetter + "Letter");
 		Instantiate (letterPrefab, letterSpawn.position, letterSpawn.rotation);
+		nextCharacter = GetRandomLetter ();
+		Text text = nextLetterText.GetComponent<Text>();
+		text.text = "Next Letter: " + nextCharacter.ToString ();
 	}
 
 	/// <summary>
