@@ -31,10 +31,8 @@ public class RandomLetters : MonoBehaviour {
 	public static float fiveLetterScore = 1.6f;
 	public static float sixLetterScore = 1.8f;
 	public static float sevenLetterScore = 2.0f;
+	public static bool isPaused = false;
 
-
-	//public static List<string> wordList = new List<string>();
-	
 	// Use this for initialization
 	void Start () {
 		gameOverPanel.SetActive (false);
@@ -68,8 +66,6 @@ public class RandomLetters : MonoBehaviour {
 		}
 
 		if (isGameOver) {
-//			Text text = gameOverText.GetComponent<Text>();
-//			text.text = "Game Over!!";
 			gameOverPanel.SetActive (true);
 		}
 		else {
@@ -180,14 +176,21 @@ public class RandomLetters : MonoBehaviour {
 			currentVowelLetters += selectedElement;
 		}
 		return selectedElement;
-//		char randomChar = 'a';
-//		int randomInt = Random.Range (1, 3);
-//		if (randomInt == 1) {
-//			randomChar = consonantSet[Random.Range(0, consonantSet.Length)];
-//		} else if (randomInt == 2) {
-//			randomChar = firstVowelSet[Random.Range(0, firstVowelSet.Length)];
-//		} 
+	}
 
-		//return randomChar;
+	public void PauseGame()
+	{
+		if (isPaused) {
+			isPaused = false;
+			Time.timeScale = 1;
+		} else if (!isPaused) {
+			isPaused = true;
+			Time.timeScale = 0;
+		}
+	}
+
+	public void ApplicationQuit()
+	{
+		Application.LoadLevel ("Menu");
 	}
 }
