@@ -78,7 +78,7 @@ MonoBehaviour:
   isSwipedDown: 0
   letterScore: 500
   hasMoved: 0
-  otherSprite: {fileID: 21300000, guid: cda94a575c08fc84d8d5340ba130c838, type: 3}
+  otherSprite: {fileID: 21300000, guid: 61897195fb1fe75488d4e84040d68bb3, type: 3}
   anim: {fileID: 0}
   word: 
 --- !u!212 &21251284

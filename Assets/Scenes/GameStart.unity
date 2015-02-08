@@ -287,10 +287,10 @@ RectTransform:
   - {fileID: 2133372657}
   m_Father: {fileID: 1196509971}
   m_RootOrder: 4
-  m_AnchorMin: {x: .743872941, y: .933000028}
-  m_AnchorMax: {x: .846872926, y: .986460388}
-  m_AnchoredPosition: {x: -.0999984741, y: .100006104}
-  m_SizeDelta: {x: 0, y: 2}
+  m_AnchorMin: {x: .877690732, y: .933000028}
+  m_AnchorMax: {x: .984309375, y: .990328848}
+  m_AnchoredPosition: {x: -.299999237, y: -.899999976}
+  m_SizeDelta: {x: -1, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &420859641
 MonoBehaviour:
@@ -1188,6 +1188,9 @@ MonoBehaviour:
   gameOverPanel: {fileID: 974044866}
   crashSound: {fileID: 8300000, guid: 68fe844a78bc00e4fa5a078e18a0b53b, type: 3}
   nextLetterText: {fileID: 806160112}
+  pauseButton: {fileID: 1142522657}
+  pauseSprite: {fileID: 21300000, guid: 0d6e11e2f31f92f43a91fb44db247b21, type: 3}
+  playSprite: {fileID: 21300000, guid: ae57c96c217c10146b01b55c1b99547a, type: 3}
 --- !u!4 &1709703513
 Transform:
   m_ObjectHideFlags: 0
@@ -1290,10 +1293,10 @@ RectTransform:
   - {fileID: 744390709}
   m_Father: {fileID: 1196509971}
   m_RootOrder: 3
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -21, y: -20.3999939}
-  m_SizeDelta: {x: 30, y: 30}
+  m_AnchorMin: {x: .743872941, y: .933000028}
+  m_AnchorMax: {x: .846872926, y: .990328848}
+  m_AnchoredPosition: {x: .700000763, y: -.399999976}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1920863542
 MonoBehaviour:

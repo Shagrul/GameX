@@ -32,9 +32,13 @@ public class RandomLetters : MonoBehaviour {
 	public static float sixLetterScore = 1.8f;
 	public static float sevenLetterScore = 2.0f;
 	public static bool isPaused = false;
+	public GameObject pauseButton;
+	public Sprite pauseSprite;
+	public Sprite playSprite;
 
 	// Use this for initialization
 	void Start () {
+		MusicScript.shouldStop = true;
 		gameOverPanel.SetActive (false);
 		PopulateValidWordList ();
 		alphabetList.Add (new KeyValuePair<string, double>("AEI", 0.28));
@@ -43,8 +47,8 @@ public class RandomLetters : MonoBehaviour {
 		alphabetList.Add (new KeyValuePair<string, double>("LNRST", 0.22));
 		alphabetList.Add (new KeyValuePair<string, double>("FHKPWV", 0.1));
 		alphabetList.Add (new KeyValuePair<string, double>("BCDGM", 0.15));
-//		alphabetList.Add (new KeyValuePair<string, double>("A", 0.5));
-//		alphabetList.Add (new KeyValuePair<string, double>("BC", 0.5));
+//		alphabetList.Add (new KeyValuePair<string, double>("A", 1.0));
+		alphabetList.Add (new KeyValuePair<string, double>("BC", 0.5));
 		vowelList.Add (new KeyValuePair<string, double>("AEI", 0.7));
 		vowelList.Add (new KeyValuePair<string, double>("OU", 0.3));
 //		vowelList.Add (new KeyValuePair<string, double>("A", 1));
@@ -79,6 +83,8 @@ public class RandomLetters : MonoBehaviour {
 
 	public void RestartGame()
 	{
+		Application.LoadLevel ("GameStart");
+
 		var cubes = GameObject.FindGameObjectsWithTag ("InactiveLetter");
 		for (int i = cubes.Length - 1; i >= 0; i--) {
 			Destroy(cubes[i]);
@@ -181,9 +187,13 @@ public class RandomLetters : MonoBehaviour {
 	public void PauseGame()
 	{
 		if (isPaused) {
+			var button = pauseButton.GetComponent<Button>();
+			button.image.overrideSprite = null;
 			isPaused = false;
 			Time.timeScale = 1;
 		} else if (!isPaused) {
+			var button = pauseButton.GetComponent<Button>();
+			button.image.overrideSprite = playSprite;
 			isPaused = true;
 			Time.timeScale = 0;
 		}

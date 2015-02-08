@@ -9,6 +9,7 @@ TagManager:
   - ActiveLetter
   - InactiveLetter
   - IsScrambling
+  - HighlightedLetter
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

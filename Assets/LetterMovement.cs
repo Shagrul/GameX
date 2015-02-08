@@ -15,7 +15,7 @@ public class LetterMovement : MonoBehaviour {
 	public bool shouldRemove = false;
 	public bool isActive;
 	public float speed;
-	private float minSwipeDistX = 131f;
+	private float minSwipeDistX = 115f;
 	public string letterInAlphabet;
 	public bool isSwipedDown = false;
 	public int letterScore;
@@ -24,9 +24,12 @@ public class LetterMovement : MonoBehaviour {
 	public Sprite otherSprite;
 	public AnimationClip anim;
 	public string word;
+	public bool isHighlightActive = false;
+	private UnityEngine.Object letterHighlight;
 
 	// Use this for initialization
 	void Start () {
+		//SomeFunction ();
 		InitializeMovementParameters ();
 	}
 	
@@ -41,13 +44,18 @@ public class LetterMovement : MonoBehaviour {
 		}
 		DestroyLetters();	
 		HighlightLetters ();
+
+		if (!isHighlightActive) {
+			isHighlightActive = true;
+			var test = (GameObject)Resources.Load("ALetterHighlight");
+			letterHighlight = Instantiate (test, targetPosition, transform.rotation);	
+		}
 	}
 
 	private void RemoveWord()
 	{
 		if (Input.GetMouseButtonDown(1)) {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			
 			
 			RaycastHit hit;
 			
@@ -71,6 +79,8 @@ public class LetterMovement : MonoBehaviour {
 	{
 		if (isActive) {
 			if (transform.position == targetPosition) {
+				DestroyImmediate(letterHighlight);
+
 				sprite.sortingOrder = (int)(transform.position.y * -100);
 				RandomLetters.shouldPlaySound = true;
 				DeactivateLetter();
@@ -78,13 +88,15 @@ public class LetterMovement : MonoBehaviour {
 				DetermineIfValidWord();
 				DetermineIfYValidWord();
 				DetermineIfGameOver();
-
+				GameObject[] cubes;
+				cubes = GameObject.FindGameObjectsWithTag ("HighlightedLetter");
 			}
 		}
 		
 		if (tag == "IsScrambling") {
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 			if (transform.position == targetPosition) {
+
 				DeactivateLetter();
 				allLettersOnBoard.Add(gameObject.GetComponent<LetterMovement>());
 				DetermineIfValidWord();
@@ -154,6 +166,8 @@ public class LetterMovement : MonoBehaviour {
 							                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
 							
 							if (isLeft == null) {
+								isHighlightActive = false;
+								DestroyImmediate(letterHighlight);
 								Vector3 currentPosition = transform.position;
 								currentPosition.x += RandomLetters.movementMargin;
 								targetPosition.x += RandomLetters.movementMargin;
@@ -166,6 +180,8 @@ public class LetterMovement : MonoBehaviour {
 							                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
 
 							if (isLeft == null) {
+								isHighlightActive = false;
+								DestroyImmediate(letterHighlight);
 								Vector3 currentPosition = transform.position;
 								currentPosition.x -= RandomLetters.movementMargin;
 								targetPosition.x -= RandomLetters.movementMargin;
@@ -177,7 +193,7 @@ public class LetterMovement : MonoBehaviour {
 					startPos = touch.position;
 				}
 
-				if (swipeDistVerticle > 150f) {
+				if (swipeDistVerticle > 300f) {
 					float swipeValue = Mathf.Sign (touch.position.y - startPos.y);
 					
 					if (swipeValue < 0) {
@@ -198,6 +214,8 @@ public class LetterMovement : MonoBehaviour {
 				                                     Convert.ToInt32((x.transform.position.y + RandomLetters.movementMargin + 0.00f) * 100) > Convert.ToInt32(transform.position.y * 100)).FirstOrDefault();
 
 				if (isLeft == null) {
+					isHighlightActive = false;
+					DestroyImmediate(letterHighlight);
 					Vector3 position = this.transform.position;
 					position.x -= RandomLetters.movementMargin;
 					targetPosition.x -= RandomLetters.movementMargin;
@@ -211,6 +229,8 @@ public class LetterMovement : MonoBehaviour {
 			
 			if (isLeft == null) {
 				if (transform.position.x + RandomLetters.movementMargin < 5f) {
+					isHighlightActive = false;
+					DestroyImmediate(letterHighlight);
 					Vector3 position = this.transform.position;
 					position.x += RandomLetters.movementMargin;
 					targetPosition.x += RandomLetters.movementMargin;
@@ -525,6 +545,13 @@ public class LetterMovement : MonoBehaviour {
 			DetermineScore(letterMovement);
 			allLettersOnBoard.Remove(letterMovement);
 			Destroy (gameObject);
+
+			GameObject[] cubes;
+			cubes = GameObject.FindGameObjectsWithTag ("Letter");
+			foreach (var item in cubes) {
+				var k = item.GetComponent<LetterMovement>();
+				//Destroy (k.letterHighlight);
+			}
 		}
 	}
 
@@ -580,4 +607,17 @@ public class LetterMovement : MonoBehaviour {
 //				//DoSomething();
 //		}
 	}
+
+	private void SomeFunction()
+	{
+		var lr = gameObject.GetComponent<LineRenderer>();
+		
+//		var gun = GameObject.Find("Gun");
+//		var projectile = GameObject.Find("Projectile");
+		
+		lr.SetPosition(0, transform.position);
+		lr.SetPosition(1, targetPosition);
+	}
+
+
 }

@@ -15,7 +15,7 @@ public class MenuScript : MonoBehaviour {
 
 	public void OnClickPlay()
 	{
-		Application.LoadLevel ("GameStart");
+		Application.LoadLevel ("GameMap");
 	}
 
 	public void OnClickQuit()
